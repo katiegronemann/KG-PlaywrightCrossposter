@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet Crossposter</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1DA1F2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tweet Crossposter</h1>
+        <textarea id="tweetContent" rows="4" placeholder="Enter your tweet here..."></textarea>
+        <button onclick="submitTweet()">Post Tweet</button>
+    </div>
+
+    <script>
+        async function submitTweet() {
+            const tweetContent = document.getElementById('tweetContent').value;
+            console.log('Tweet:', tweetContent);
+
+
+            try {
+                const response = await fetch('/tweet', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ tweet: tweetContent })
+                });
+                console.log('Response:', response);
+
+                
+                if (response.ok) {
+                    console.log('Tweet posted successfully!');
+                    document.getElementById('tweetContent').value = '';
+                } else {
+                    alert('Failed to post tweet');
+                }
+            } catch (error) {
+                console.log('Error:', error);
+                alert('Error posting tweet');
+            }
+        }
+    </script>
+</body>
+</html>
